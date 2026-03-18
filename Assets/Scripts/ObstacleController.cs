@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
     [DefaultExecutionOrder(-50)]
     public class ObstacleController : MonoBehaviour

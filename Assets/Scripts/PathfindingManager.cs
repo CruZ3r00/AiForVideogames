@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
     public class PathfindingManager : MonoBehaviour
     {

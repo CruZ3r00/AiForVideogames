@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
+    //support class for math operations used in the simulation, such as distance calculations and random point generation
     public static class SimulationMath
     {
         public static float DistanceXZSquared(Vector3 a, Vector3 b)

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
     public class WorldManager : MonoBehaviour
     {
@@ -80,11 +80,13 @@ namespace AcademicFlockingSimulation
         public float WorldDepth => WorldMax.y - WorldMin.y;
         public Vector3 WorldCenter => new Vector3((WorldMin.x + WorldMax.x) * 0.5f, movementY, (WorldMin.y + WorldMax.y) * 0.5f);
 
+        //initialization
         public void Initialize(SimulationManager manager)
         {
             simulationManager = manager;
         }
 
+        //validate scene setup for world 
         public bool ValidateSceneSetup()
         {
             bool isValid = true;
@@ -155,6 +157,7 @@ namespace AcademicFlockingSimulation
             obstacles.Clear();
         }
 
+        //function to spawn obstacles in the world, ensuring they don't spawn too close to the target or flock
         public void SpawnObstacles(Vector3 protectedTargetPosition, Vector3 protectedFlockPosition)
         {
             ClearRuntimeObstacles();
@@ -186,6 +189,7 @@ namespace AcademicFlockingSimulation
             return position;
         }
 
+        //function to get the opposite corner of the world given a corner
         public WorldCorner GetOppositeCorner(WorldCorner corner)
         {
             switch (corner)
@@ -201,6 +205,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //function to get the world position of a corner, using the corner references
         public Vector3 GetCornerPosition(WorldCorner corner)
         {
             Transform cornerTransform = GetCornerTransform(corner);
@@ -226,6 +231,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //function to find the initial flock's spawn postion
         public Vector3 SampleNearCorner(WorldCorner corner, float maxDistance, float padding)
         {
             float angle = Random.Range(0f, Mathf.PI * 0.5f);
@@ -255,6 +261,7 @@ namespace AcademicFlockingSimulation
             return ClampInsideWorld(candidate, padding);
         }
 
+        //function to check if  a position is inside a death area defined by the obstacles, with an optional radius padding
         public bool IsInsideDeathArea(Vector3 position, float radiusPadding = 0f)
         {
             for (int i = 0; i < obstacles.Count; i++)
@@ -284,6 +291,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //check if all corner references are assigned
         private bool HasAllCornerReferences()
         {
             return southWestCorner != null &&
@@ -292,6 +300,7 @@ namespace AcademicFlockingSimulation
                    northEastCorner != null;
         }
 
+        //function to build a shuffled lane order for obstacle spawning
         private int[] BuildShuffledLaneOrder()
         {
             int[] laneOrder = new int[ObstacleCount];
@@ -311,6 +320,7 @@ namespace AcademicFlockingSimulation
             return laneOrder;
         }
 
+        //function to find a valid spawn point for obstacles
         private Vector3 FindObstacleSpawnPoint(int laneIndex, Vector3 protectedTargetPosition, Vector3 protectedFlockPosition)
         {
             Vector2 min = WorldMin;

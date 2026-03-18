@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
+    // Central manager for the simulation, responsible for initializing and coordinating all subsystems, and maintaining the main FSM for simulation flow control.
     [DefaultExecutionOrder(-1000)]
     public class SimulationManager : MonoBehaviour
     {
@@ -33,6 +34,7 @@ namespace AcademicFlockingSimulation
             AutoAssignReferences();
         }
 
+        //initialize
         private void Awake()
         {
             if (!ValidateSceneSetup())
@@ -48,6 +50,7 @@ namespace AcademicFlockingSimulation
             fsmContext = new SimulationFsmContext(this, worldManager, pathfindingManager, flockManager, targetManager);
         }
 
+        // Start the simulation
         private void Start()
         {
             if (startSimulationOnStart && enabled)
@@ -56,6 +59,8 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //called every fixed update, advances the FSM and updates triggers in the context based on elapsed time, and handles immediate state transitions 
+        // for states that should not wait a frame.
         private void FixedUpdate()
         {
             if (simulationFsm == null)
@@ -85,6 +90,7 @@ namespace AcademicFlockingSimulation
             AdvanceImmediateStates();
         }
 
+        //all agent have died, notify the context to trigger failure state in the FSM.
         public void NotifyAgentKilled(AgentController agent)
         {
             if (simulationFsm == null || IsFailed)
@@ -98,6 +104,8 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //function to activate the target reached trigger in the context, called by agents when they reach the target, 
+        // passing the position of the reached target for respawn next target.
         public void NotifyTargetReached(AgentController agent)
         {
             if (simulationFsm == null || !IsRunning || IsFailed)
@@ -116,6 +124,7 @@ namespace AcademicFlockingSimulation
             pathfindingManager.ClearPath();
         }
 
+        //functionality for validate the scene setup, checking for required references, with error logging if validation fails.
         private bool ValidateSceneSetup()
         {
             bool hasReferences =
@@ -136,11 +145,14 @@ namespace AcademicFlockingSimulation
                    targetManager.ValidateSceneSetup();
         }
 
+
         internal void SetCompatibilityState(SimulationState newState)
         {
             CurrentState = newState;
         }
 
+        //functionmality for constructing the main FSM of the simulation, how seen in class course, with states for booting, spawning entities, running, handling target reached, 
+        // respawning agents, replanning paths, and failure, and transitions based on triggers set in the context by the FsmSimulationContext.cs.
         private FSM CreateSimulationFsm()
         {
             SimulationBootState bootStateLogic = new SimulationBootState(fsmContext);
@@ -207,6 +219,7 @@ namespace AcademicFlockingSimulation
             return new FSM(bootState);
         }
 
+        //function to advanced if the current state is an immediate state, such as booting, spawning, and handling target reached.
         private void AdvanceImmediateStates()
         {
             if (simulationFsm == null)
@@ -230,6 +243,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //true if state needs to be immediately advanced, false otherwise
         private static bool IsImmediateState(SimulationState state)
         {
             return state == SimulationState.Boot ||
@@ -239,6 +253,7 @@ namespace AcademicFlockingSimulation
                    state == SimulationState.Replan;
         }
 
+        // Utility to auto-assign scene references if left unassigned, but not reccomended
         private void AutoAssignReferences()
         {
             if (worldManager == null)
@@ -262,6 +277,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        // functionality for on-screen debug GUI, showing current simulation state and stats, and failure message when all agents have died.
         private GUIStyle boxStyle;
         private GUIStyle labelStyle;
         private GUIStyle failStyle;

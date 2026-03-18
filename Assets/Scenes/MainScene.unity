@@ -692,12 +692,12 @@ MonoBehaviour:
   pathWeight: 4.2
   avoidanceWeight: 5.5
   urgentAvoidanceWeight: 10
-  wallAvoidanceWeight: 2.5
+  wallAvoidanceWeight: 2
   waypointReachDistance: 1.25
   pathLookAheadSteps: 2
   avoidanceLookAheadTime: 0.8
   avoidanceClearance: 0.75
-  maxTurnRateDegrees: 360
+  maxTurnRateDegrees: 300
   wallBufferDistance: 3
 --- !u!1 &728297206
 GameObject:

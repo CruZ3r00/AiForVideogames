@@ -1,4 +1,4 @@
-namespace AcademicFlockingSimulation
+﻿namespace FlockingSimulator.AIForVideogames
 {
     public enum SimulationState
     {

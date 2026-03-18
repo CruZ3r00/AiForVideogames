@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
     public class FlockManager : MonoBehaviour
     {
@@ -59,6 +59,7 @@ namespace AcademicFlockingSimulation
         public float TurnRateRadians => maxTurnRateDegrees * Mathf.Deg2Rad;
         public float WallBufferDistance => wallBufferDistance;
 
+        //initialize refernces to other managers
         public void Initialize(
             SimulationManager manager,
             WorldManager world,
@@ -71,6 +72,7 @@ namespace AcademicFlockingSimulation
             pathfindingManager = pathfinding;
         }
 
+        //validate the scene setup for the flock manager, ensuring that the agent prefab is assigned
         public bool ValidateSceneSetup()
         {
             if (agentPrefab == null)
@@ -82,6 +84,7 @@ namespace AcademicFlockingSimulation
             return true;
         }
 
+        //cleanup any agents that were spawned during runtime, ensuring a fresh state for the simulation
         public void ClearRuntimeAgents()
         {
             if (worldManager != null && worldManager.AgentsParent != null)
@@ -101,6 +104,7 @@ namespace AcademicFlockingSimulation
             nextAgentId = 0;
         }
 
+        //spawn the initial flock of agents near a specified corner of the world, using the world manager to find a suitable spawn location
         public void SpawnInitialFlock(WorldCorner spawnCorner)
         {
             Vector3 spawnCenter = worldManager.SampleNearCorner(spawnCorner, 10f, agentPrefab.Radius + 1f);
@@ -118,6 +122,7 @@ namespace AcademicFlockingSimulation
             SpawnAgentsInternal(center, spawnCount, reinforcementSpawnRadius);
         }
 
+        //function to get the center of the flock
         public Vector3 GetFlockCenter()
         {
             if (agents.Count == 0)
@@ -140,6 +145,7 @@ namespace AcademicFlockingSimulation
             return sum;
         }
 
+        //compute the neighborhood information for a given agent, calculating the separation, alignment, and cohesion vectors based on nearby agents within the specified radius
         public void ComputeNeighborhood(
             AgentController agent,
             out Vector3 separation,
@@ -194,6 +200,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //compute the direction of the flock towards the next waypoint in the path, using the pathfinding manager to find the look-ahead direciton
         public Vector3 GetPathDirection(Vector3 position, ref int pathIndex, ref int pathVersion)
         {
             return pathfindingManager.GetLookAheadDirection(
@@ -216,6 +223,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //function to remove an agent if it dies
         public void RemoveAgent(AgentController agent)
         {
             agents.Remove(agent);
@@ -240,6 +248,7 @@ namespace AcademicFlockingSimulation
             }
         }
 
+        //find a spawn point for agent given a center and radius
         private Vector3 FindAgentSpawnPoint(Vector3 center, float radius)
         {
             float agentRadius = agentPrefab.Radius;

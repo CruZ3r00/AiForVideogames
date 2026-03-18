@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace AcademicFlockingSimulation
+namespace FlockingSimulator.AIForVideogames
 {
     // Direct adaptation of the professor's FSM base structure, namespaced for project use.
     public delegate bool FSMCondition();
