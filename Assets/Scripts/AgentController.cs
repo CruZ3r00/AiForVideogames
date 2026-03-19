@@ -29,6 +29,7 @@ namespace FlockingSimulator.AIForVideogames
         public Vector3 Position => transform.position;
         public Vector3 ForwardVelocity => currentForward;
 
+        //initialize the manager references and set the agents' starting state 
         public void Initialize(
             int agentId,
             SimulationManager manager,
@@ -63,6 +64,7 @@ namespace FlockingSimulator.AIForVideogames
             gameObject.SetActive(true);
         }
 
+        //update each agent-s position, velocity and direction and ceck for target reach or death area
         private void FixedUpdate()
         {
             if (!IsAlive || simulationManager == null || !simulationManager.IsRunning)
@@ -78,6 +80,7 @@ namespace FlockingSimulator.AIForVideogames
 
             flockManager.ComputeNeighborhood(this, out Vector3 separation, out Vector3 alignment, out Vector3 cohesion, out _);
 
+            //adjust direction 
             Vector3 separationDirection = NormalizeFlat(separation);
             Vector3 alignmentDirection = NormalizeFlat(alignment);
             Vector3 cohesionDirection = NormalizeFlat(cohesion);
@@ -95,6 +98,7 @@ namespace FlockingSimulator.AIForVideogames
                 (alignmentDirection * flockManager.AlignmentWeight) +
                 (cohesionDirection * flockManager.CohesionWeight);
 
+            //adjust the avoidance and give it more weight if the agent is in an urgent situation
             Vector3 avoidanceDirection = Vector3.zero;
             bool urgentAvoidance = TryComputeAvoidance(
                 pathDirection.sqrMagnitude > 0.001f ? pathDirection : currentForward,
@@ -167,6 +171,8 @@ namespace FlockingSimulator.AIForVideogames
             pathVersion = -1;
         }
 
+        //use function and weight to compute the avoidance direction based on obstacle, walls and other agents
+        //return true if avoidance are urgent
         private bool TryComputeAvoidance(Vector3 guidanceDirection, out Vector3 avoidanceDirection)
         {
             Vector3 wallAvoidance = ComputeWallAvoidance() * flockManager.WallAvoidanceWeight;
@@ -242,6 +248,7 @@ namespace FlockingSimulator.AIForVideogames
             return urgent;
         }
 
+        //support function for TryComputeAvoidance to compute the avoidance direction from walls
         private Vector3 ComputeWallAvoidance()
         {
             float buffer = flockManager.WallBufferDistance;
@@ -271,6 +278,7 @@ namespace FlockingSimulator.AIForVideogames
             return force;
         }
 
+        //destroy the istance if the agent dies and notify the manager
         private void Die()
         {
             if (!IsAlive)
@@ -286,6 +294,7 @@ namespace FlockingSimulator.AIForVideogames
             Destroy(gameObject);
         }
 
+        //normalize a vector on xz plane to use a 2d directions
         private static Vector3 NormalizeFlat(Vector3 vector)
         {
             vector.y = 0f;

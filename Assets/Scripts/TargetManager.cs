@@ -18,12 +18,14 @@ namespace FlockingSimulator.AIForVideogames
         public float TargetRadius => targetRadius;
         public Vector3 CurrentTargetPosition => currentTarget != null ? currentTarget.transform.position : Vector3.zero;
 
+        //initialize the references at the required managers
         public void Initialize(SimulationManager manager, WorldManager world)
         {
             worldManager = world;
             reachedTargetCount = 0;
         }
 
+        //validate the scene setup for target manager, ensuring the target prefab is assigned
         public bool ValidateSceneSetup()
         {
             if (targetPrefab == null)
@@ -35,6 +37,7 @@ namespace FlockingSimulator.AIForVideogames
             return true;
         }
 
+        //clear the current target and destroy its instance
         public void ClearTarget()
         {
             if (currentTarget != null)
@@ -55,6 +58,7 @@ namespace FlockingSimulator.AIForVideogames
             }
         }
 
+        //spawn the initial target uisng the default spawning method
         public WorldCorner SpawnInitialTarget()
         {
             CurrentCorner = (WorldCorner)Random.Range(0, 4);
@@ -62,6 +66,7 @@ namespace FlockingSimulator.AIForVideogames
             return CurrentCorner;
         }
 
+        //spawn the next target after the current is reached, using the deafult spawning method
         public void SpawnNextTargetDifferentCorner()
         {
             reachedTargetCount++;
@@ -77,6 +82,8 @@ namespace FlockingSimulator.AIForVideogames
             SpawnTarget(CurrentCorner);
         }
 
+        //default spawning method that attempts to find a valid position near the specified corner,
+        // ensuring it is not inside the death area
         private void SpawnTarget(WorldCorner corner)
         {
             if (currentTarget == null)
@@ -89,6 +96,7 @@ namespace FlockingSimulator.AIForVideogames
             currentTarget.SetActive(true);
         }
 
+        //method implemented to find a valid target position near a corner specified
         private Vector3 FindValidTargetPosition(WorldCorner corner)
         {
             for (int attempt = 0; attempt < 200; attempt++)

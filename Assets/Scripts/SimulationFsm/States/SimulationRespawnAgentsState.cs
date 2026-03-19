@@ -2,6 +2,7 @@
 {
     internal sealed class SimulationRespawnAgentsState
     {
+        //state to reaspawn agent after target reached
         private readonly SimulationFsmContext context;
 
         public SimulationRespawnAgentsState(SimulationFsmContext fsmContext)

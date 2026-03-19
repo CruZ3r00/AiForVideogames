@@ -1,5 +1,6 @@
 ﻿namespace FlockingSimulator.AIForVideogames
 {
+    //state for target reached, which is the "restart" state of the simulation
     internal sealed class SimulationTargetReachedState
     {
         private readonly SimulationFsmContext context;

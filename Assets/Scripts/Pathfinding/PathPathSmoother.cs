@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace FlockingSimulator.AIForVideogames
 {
+    // This class provides functionality to simplify a path by removing unnecessary waypoints while 
+    // ensuring the path remains safe.
     internal sealed class PathPathSmoother
     {
         private const int UnsafePenaltyThreshold = 20;

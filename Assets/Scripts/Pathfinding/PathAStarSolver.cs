@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace FlockingSimulator.AIForVideogames
 {
+    //class to solve A* pathfinding on the gridGraph based on the gridNode and occupancy map
     internal sealed class PathAStarSolver
     {
         private readonly List<int> openSet;
@@ -11,6 +12,7 @@ namespace FlockingSimulator.AIForVideogames
         private readonly int[] parent;
         private readonly byte[] state;
 
+        //contructor
         public PathAStarSolver(int nodeCount)
         {
             openSet = new List<int>(1024);
@@ -19,7 +21,7 @@ namespace FlockingSimulator.AIForVideogames
             parent = new int[nodeCount];
             state = new byte[nodeCount];
         }
-
+        
         public bool TryFindPath(
             PathGridGraph graph,
             PathOccupancyMap occupancy,
@@ -80,6 +82,7 @@ namespace FlockingSimulator.AIForVideogames
             return false;
         }
 
+        //function to return the most promising node in the open set
         private int ExtractBestOpenNode()
         {
             int bestIndex = 0;
@@ -103,6 +106,7 @@ namespace FlockingSimulator.AIForVideogames
             return bestNode;
         }
 
+        //function to reconstruct the path from the goal to the start
         private void ReconstructPath(PathGridGraph graph, int startIndex, int goalIndex, List<Vector3> rawPath)
         {
             int currentIndex = goalIndex;

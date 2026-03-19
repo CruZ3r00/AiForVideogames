@@ -29,6 +29,7 @@ namespace FlockingSimulator.AIForVideogames
         public IReadOnlyList<Vector3> CurrentPath => currentPath;
         public int PathVersion { get; private set; }
 
+        //initialize subclasses 
         public void Initialize(SimulationManager manager, WorldManager world)
         {
             worldManager = world;
@@ -44,6 +45,7 @@ namespace FlockingSimulator.AIForVideogames
             }
         }
 
+        //validate inspector values 
         public bool ValidateSceneSetup()
         {
             if (cellSize <= 0f)
@@ -61,6 +63,7 @@ namespace FlockingSimulator.AIForVideogames
             return true;
         }
 
+        //clear actual path
         public void ClearPath()
         {
             currentPath.Clear();
@@ -69,6 +72,7 @@ namespace FlockingSimulator.AIForVideogames
             UpdatePathRenderer();
         }
 
+        //convert world position to gid coordinates using graph's method, and viceversa
         public Vector2Int WorldToGrid(Vector3 worldPosition)
         {
             EnsureRuntimeDependencies();
@@ -91,6 +95,7 @@ namespace FlockingSimulator.AIForVideogames
             return graph.GridToWorld(x, z);
         }
 
+        //function to build path, using subclasses' methods 
         public bool TryBuildPath(Vector3 startWorld, Vector3 goalWorld, IReadOnlyList<ObstacleController> obstacles)
         {
             EnsureRuntimeDependencies();
@@ -151,6 +156,7 @@ namespace FlockingSimulator.AIForVideogames
             return false;
         }
 
+        //function to get the direcion
         public Vector3 GetLookAheadDirection(
             Vector3 position,
             ref int pathIndex,

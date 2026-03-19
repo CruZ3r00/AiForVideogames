@@ -2,6 +2,7 @@
 {
     internal sealed class SimulationRunningState
     {
+        //state for running agent during the simulation
         private readonly SimulationFsmContext context;
 
         public SimulationRunningState(SimulationFsmContext fsmContext)

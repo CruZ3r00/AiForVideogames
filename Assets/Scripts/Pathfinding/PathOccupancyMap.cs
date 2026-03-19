@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace FlockingSimulator.AIForVideogames
 {
+    // This class maintains a grid-based occupancy map for pathfinding, marking nodes as blocked 
+    // or assigning penalties based on proximity to dynamic obstacles.
     internal sealed class PathOccupancyMap
     {
         private readonly bool[] blocked;

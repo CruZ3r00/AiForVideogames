@@ -2,6 +2,7 @@
 
 namespace FlockingSimulator.AIForVideogames
 {
+    //clss to hold the context of FSM through the simulation
     internal sealed class SimulationFsmContext
     {
         private readonly SimulationManager owner;
@@ -55,6 +56,7 @@ namespace FlockingSimulator.AIForVideogames
             FailedRequested = true;
         }
 
+        //step into the target reached state by setting the variables for conditions
         public void QueueTargetReached(Vector3 reachedTargetPosition)
         {
             if (TargetReachedRequested || FailedRequested)
@@ -68,6 +70,7 @@ namespace FlockingSimulator.AIForVideogames
             ReachedTargetPosition = reachedTargetPosition;
         }
 
+        //set the variables to step into the replan state if needed
         public void UpdateRunningTriggers(float deltaTime)
         {
             if (FailedRequested)
@@ -96,6 +99,7 @@ namespace FlockingSimulator.AIForVideogames
             BootstrapComplete = true;
         }
 
+        //spawn initial entities and set the variables for the transition conditions to step into the next state
         public void SpawnInitialEntities()
         {
             owner.SetCompatibilityState(SimulationState.SpawnInitialEntities);
@@ -111,6 +115,7 @@ namespace FlockingSimulator.AIForVideogames
             ReplanRequested = true;
         }
 
+        //reset the variables for the transition conditions to step into the next state
         public void EnterRunning()
         {
             owner.SetCompatibilityState(SimulationState.Running);
@@ -121,6 +126,8 @@ namespace FlockingSimulator.AIForVideogames
             replanTimer = 0f;
         }
 
+        //handle the target reached event, set the variables for the transition conditions 
+        // to step into the next state
         public void HandleTargetReached()
         {
             owner.SetCompatibilityState(SimulationState.TargetReached);
@@ -134,6 +141,7 @@ namespace FlockingSimulator.AIForVideogames
             TargetHandled = true;
         }
 
+        //set the variables to step into the state who respawn agents when target is reached
         public void RespawnAgents()
         {
             owner.SetCompatibilityState(SimulationState.RespawnAgents);
@@ -147,6 +155,7 @@ namespace FlockingSimulator.AIForVideogames
             ReplanRequested = true;
         }
 
+        //set the variables to step into the following state
         public void ExecuteReplan()
         {
             owner.SetCompatibilityState(SimulationState.Replan);
@@ -170,6 +179,7 @@ namespace FlockingSimulator.AIForVideogames
             ReplanComplete = true;
         }
 
+        //set to handle failing state
         public void EnterFailed()
         {
             owner.SetCompatibilityState(SimulationState.Failed);

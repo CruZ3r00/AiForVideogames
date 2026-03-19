@@ -2,7 +2,7 @@
 
 namespace FlockingSimulator.AIForVideogames
 {
-    // Direct adaptation of the professor's FSM base structure, namespaced for project use.
+    //Core fsm implementation based on course material
     public delegate bool FSMCondition();
     public delegate void FSMAction();
 

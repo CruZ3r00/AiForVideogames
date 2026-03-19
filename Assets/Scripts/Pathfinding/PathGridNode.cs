@@ -2,6 +2,7 @@
 
 namespace FlockingSimulator.AIForVideogames
 {
+    //definition of a single node in the pathfinding grid
     internal sealed class PathGridNode
     {
         public PathGridNode(int x, int z, int index, Vector3 worldPosition)

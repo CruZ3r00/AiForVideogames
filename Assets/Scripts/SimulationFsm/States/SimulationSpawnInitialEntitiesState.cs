@@ -2,6 +2,7 @@
 {
     internal sealed class SimulationSpawnInitialEntitiesState
     {
+        //state to spawn initial entities
         private readonly SimulationFsmContext context;
 
         public SimulationSpawnInitialEntitiesState(SimulationFsmContext fsmContext)

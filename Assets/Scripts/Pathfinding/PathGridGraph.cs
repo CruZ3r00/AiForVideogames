@@ -19,6 +19,7 @@ namespace FlockingSimulator.AIForVideogames
 
         private readonly PathGridNode[] nodes;
 
+        //function to generate the grid graph on the world's dimension and cellSize
         public PathGridGraph(WorldManager worldManager, float cellSize)
         {
             WorldMin = worldManager.WorldMin;
@@ -45,6 +46,7 @@ namespace FlockingSimulator.AIForVideogames
         public Vector2 WorldMin { get; }
         public float MovementY { get; }
 
+        //utility to convert world position to grid coordinates and viceversa
         public Vector2Int WorldToGrid(Vector3 worldPosition)
         {
             int x = Mathf.Clamp(Mathf.FloorToInt((worldPosition.x - WorldMin.x) / CellSize), 0, Width - 1);
@@ -60,6 +62,7 @@ namespace FlockingSimulator.AIForVideogames
                 WorldMin.y + ((z + 0.5f) * CellSize));
         }
 
+        //check if the coordinates are in the grid bounds
         public bool InBounds(int x, int z)
         {
             return x >= 0 && x < Width && z >= 0 && z < Height;
@@ -70,6 +73,7 @@ namespace FlockingSimulator.AIForVideogames
             return (z * Width) + x;
         }
 
+        //get a node after checking if index are in bounds, with overloads for different input types
         public PathGridNode GetNode(int x, int z)
         {
             return InBounds(x, z) ? nodes[ToIndex(x, z)] : null;
@@ -98,6 +102,7 @@ namespace FlockingSimulator.AIForVideogames
             }
         }
 
+        //heuristic for a star
         public int CalculateHeuristic(PathGridNode from, PathGridNode to)
         {
             int dx = Mathf.Abs(from.X - to.X);

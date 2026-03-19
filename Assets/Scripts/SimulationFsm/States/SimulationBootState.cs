@@ -2,6 +2,7 @@
 {
     internal sealed class SimulationBootState
     {
+        //state for booting the simulation
         private readonly SimulationFsmContext context;
 
         public SimulationBootState(SimulationFsmContext fsmContext)

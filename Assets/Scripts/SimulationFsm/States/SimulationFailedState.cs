@@ -2,6 +2,7 @@
 {
     internal sealed class SimulationFailedState
     {
+        //state for failure
         private readonly SimulationFsmContext context;
 
         public SimulationFailedState(SimulationFsmContext fsmContext)
